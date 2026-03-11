@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Комментарий к статье {{ comment.article.id }}</h1>
+    <p><strong>Автор:</strong> {{ comment.author }}</p>
+    <div>{{ comment.content }}</div>
+    <p><em>Дата: {{ comment.created_at }}</em></p>
+{% endblock %}

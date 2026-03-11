@@ -5,5 +5,7 @@
     {% for article in articles %}
         <h2>{{ article.title }}</h2>
         <div>{{ article.content|slice:":200" }}</div>
+    {% empty %}
+        <p>Статей пока нет.</p>
     {% endfor %}
 {% endblock %}

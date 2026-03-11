@@ -26,15 +26,6 @@ DEBUG = os.getenv("DEBUG", False)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9(s(hz5a7xc!*w)2-h!dg06v5*^4)59&wkr!7j$)ef7rwj$9n$'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-
-
 ALLOWED_HOSTS = []
 
 
@@ -90,7 +81,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-default_db_url = os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
+default_db_url = os.getenv('DATABASE_URL', f'sqlite:////{BASE_DIR / 'db.sqlite3'}')
 db_from_env = dj_database_url.config(default=default_db_url, conn_max_age=600)
 DATABASES["default"].update(db_from_env)
 

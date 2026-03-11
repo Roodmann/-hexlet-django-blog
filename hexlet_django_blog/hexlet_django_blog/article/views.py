@@ -1,24 +1,47 @@
+from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render
 from django.views import View
 from django.shortcuts import redirect
 from django.urls import reverse
-from .models import Article
+from .models import Article, Comment
 
 
 class IndexView(View):
     template_name = 'articles/index.html'
 
-    def get_context_data(self, request, **kwargs):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         tags = kwargs.get('tags')
         article_id = kwargs.get('article_id')
-        message = f"Статья номер {article_id}. Тег {tags}"
-        articles = Article.objects.all()
-        context = {
-            'message': message,
-            'app_name': 'hexlet_django_blog.article',
-            'articles': articles
-        }
-        return render(request, self.template_name, context)
+        context['message'] = f"Статья номер {article_id}. Тег {tags}"
+        context['app_name'] = 'hexlet_django_blog.article'
+        context['articles'] = Article.objects.all()
+        return context
+
+
+class ArticleView(View):
+    def get(self, request, *args, **kwargs):
+        article = get_object_or_404(Article, id=kwargs["id"])
+        return render(
+            request,
+            "articles/show.html",
+            context={
+                "article": article,
+            },
+        )
+
+
+class ArticleCommentsView(View):
+    def get(self, request, article_id, id):
+        comment = get_object_or_404(Comment, id=id, article__id=article_id)
+        return render(
+            request,
+            "articles/comment_detail.html",
+            context={
+                "comment": comment,
+                "article_id": article_id,
+            }
+        )
 
 
 def home_redirect(request):
