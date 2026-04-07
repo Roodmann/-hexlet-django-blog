@@ -1,0 +1,7 @@
+<!-- create.html -->
+<h1>Создать статью</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Опубликовать</button>
+</form>

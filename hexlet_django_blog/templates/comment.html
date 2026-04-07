@@ -1,0 +1,15 @@
+{% if form.errors %}
+<div>
+    <ul>
+    {% for error in form.errors %}
+        <li><strong>{{ error|escape }}</strong></li>
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}
+<form action="{% url 'comment_create' article_id=article.id %}" method="post">
+    {% csrf_token %}
+    <label for="{{ form.content.id_for_label }}">Комментарий:</label>
+    {{ form.content }}
+    <input type="submit" value="Сохранить">
+</form>
