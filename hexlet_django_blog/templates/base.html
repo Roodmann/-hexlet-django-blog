@@ -4,16 +4,73 @@
 <html lang="en">
 <head>
     <title>{% block title %}Django на Хекслете{% endblock %}</title>
+    {% block head %}
+    <!-- Здесь можно вставлять стили или скрипты -->
+    {% endblock %}
 </head>
 <body>
-<div id="sidebar">
-    {% block sidebar %}
-        <ul>
-            <li><a href="/">Главная</a></li>
-            <li><a href="/articles/">Статьи</a></li>
-        </ul>
-    {% endblock %}
-</div>
+<header>
+  <!-- Вставьте сюда вашу шапку -->
+  <style>
+    :root {
+      --header-bg-color: #159498; /* основной цвет шапки, меняйте по необходимости */
+      --text-color: #594141;
+    }
+
+    header {
+        width: 100%;
+        height: 80px; /* или 100px, по желанию */
+        background-color: #0a6986; /* цвет фона */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        box-sizing: border-box;
+    }
+
+    .logo {
+      font-size: 1.5em;
+    }
+
+    .burger {
+      width: 30px;
+      height: 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .burger span {
+      display: block;
+      height: 4px;
+      background-color: var(--text-color);
+      border-radius: 2px;
+    }
+
+    nav {
+      display: none;
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background-color: var(--header-bg-color);
+      flex-direction: column;
+      width: 200px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    nav a {
+      padding: 10px;
+      color: var(--text-color);
+      text-decoration: none;
+    }
+
+    .menu-active nav {
+      display: flex;
+    }
+  </style>
+</header>
+
 <!-- Блок для отображения сообщений -->
 {% if messages %}
 <div class="messages">
@@ -22,8 +79,28 @@
     {% endfor %}
 </div>
 {% endif %}
+
+<div id="sidebar">
+    {% block sidebar %}
+        <ul>
+            <li><a href="/">Главная</a></li>
+            <li><a href="/articles/">Статьи</a></li>
+        </ul>
+    {% endblock %}
+</div>
+
 <div id="content">
     {% block content %}{% endblock %}
 </div>
+
+<script>
+  function toggleMenu() {
+    document.querySelector('header').classList.toggle('menu-active');
+    const burger = document.getElementById('burger');
+    const expanded = burger.getAttribute('aria-expanded') === 'true' || false;
+    burger.setAttribute('aria-expanded', String(!expanded));
+  }
+</script>
+
 </body>
 </html>

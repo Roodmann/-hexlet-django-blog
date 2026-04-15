@@ -124,6 +124,16 @@ class ArticleFormEditView(View):
         )
 
 
+class ArticleFormDeleteView(View):
+    def post(self, request, *args, **kwargs):
+        article_id = kwargs.get("id")
+        article = Article.objects.get(id=article_id)
+        if article:
+            article.delete()
+            messages.success(request, "Статья успешно удалена.")
+        return redirect("article")
+
+
 def home_redirect(request):
     url = reverse('article', kwargs={'tags': 'python', 'article_id': 42})
     return redirect(url)
