@@ -1,23 +1,25 @@
-<!-- hexlet_django_blog/templates/base.html -->
-
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <title>{% block title %}Django на Хекслете{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{% static 'img/fav/fav.ico' %}" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/fav/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/fav/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/fav/favicon-16x16.png' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <meta name="msapplication-TileColor" content="#000">
+    <meta name="theme-color" content="#ffffff">
+    <title>{% block title %}{% endblock %}</title>
     {% block head %}
-    <!-- Здесь можно вставлять стили или скрипты -->
-    {% endblock %}
-</head>
-<body>
-<header>
-  <!-- Вставьте сюда вашу шапку -->
-  <style>
-    :root {
-      --header-bg-color: #159498; /* основной цвет шапки, меняйте по необходимости */
-      --text-color: #594141;
-    }
+    <style>
+      :root {
+        --header-bg-color: #159498; /* основной цвет шапки, меняйте по необходимости */
+        --text-color: #594141;
+      }
 
-    header {
+      header {
         width: 100%;
         height: 80px; /* или 100px, по желанию */
         background-color: #0a6986; /* цвет фона */
@@ -26,72 +28,73 @@
         justify-content: space-between;
         padding: 10px 20px;
         box-sizing: border-box;
-    }
+        position: relative; /* для позиционирования меню */
+      }
 
-    .logo {
-      font-size: 1.5em;
-    }
+      /* Можно оставить стили для header внутри include, если нужно, либо вынести сюда */
+      .burger {
+        width: 30px;
+        height: 25px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: pointer;
+      }
 
-    .burger {
-      width: 30px;
-      height: 25px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      cursor: pointer;
-    }
+      .burger span {
+        display: block;
+        height: 4px;
+        background-color: var(--text-color);
+        border-radius: 2px;
+      }
 
-    .burger span {
-      display: block;
-      height: 4px;
-      background-color: var(--text-color);
-      border-radius: 2px;
-    }
+      nav {
+        display: none;
+        position: absolute;
+        top: 80px; /* под шапкой, если высота другая - скорректировать */
+        right: 20px;
+        background-color: var(--header-bg-color);
+        flex-direction: column;
+        width: 200px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        z-index: 1000;
+      }
 
-    nav {
-      display: none;
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      background-color: var(--header-bg-color);
-      flex-direction: column;
-      width: 200px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    }
+      nav a {
+        padding: 10px;
+        color: var(--text-color);
+        text-decoration: none;
+      }
 
-    nav a {
-      padding: 10px;
-      color: var(--text-color);
-      text-decoration: none;
-    }
-
-    .menu-active nav {
-      display: flex;
-    }
-  </style>
+      .menu-active nav {
+        display: flex;
+      }
+    </style>
+    {% endblock %}
+</head>
+<body>
+<header>
+  {% include 'header.html' %}
 </header>
 
-<!-- Блок для отображения сообщений -->
+<!-- Блок для сообщений -->
 {% if messages %}
-<div class="messages">
+<div class="messages container py-2">
     {% for message in messages %}
         <div class="alert alert-{{ message.tags }}">{{ message }}</div>
     {% endfor %}
 </div>
 {% endif %}
 
-<div id="sidebar">
-    {% block sidebar %}
-        <ul>
-            <li><a href="/">Главная</a></li>
-            <li><a href="/articles/">Статьи</a></li>
-        </ul>
-    {% endblock %}
-</div>
-
-<div id="content">
+<main>
+  <div class="container py-5">
     {% block content %}{% endblock %}
-</div>
+  </div>
+</main>
+
+<footer class="border-top text-center py-3">
+  {% include 'footer.html' %}
+</footer>
 
 <script>
   function toggleMenu() {
@@ -99,8 +102,13 @@
     const burger = document.getElementById('burger');
     const expanded = burger.getAttribute('aria-expanded') === 'true' || false;
     burger.setAttribute('aria-expanded', String(!expanded));
+    const nav = document.querySelector('header nav');
+    if (nav.style.display === 'flex') {
+      nav.style.display = 'none';
+    } else {
+      nav.style.display = 'flex';
+    }
   }
 </script>
-
 </body>
 </html>

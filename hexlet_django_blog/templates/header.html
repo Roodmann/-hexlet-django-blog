@@ -1,14 +1,27 @@
-{% extends "base.html" %}
 
-<header>
-    <div class="logo">Мой сайт</div>
-    <div class="burger" id="burger" aria-label="Меню" aria-expanded="false" role="button" tabindex="0" onclick="toggleMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
+{% load static %}
+<header style="background-color: #0a6986; padding: 10px 20px; position: relative;">
+    <div class="logo" style="font-weight: bold; font-size: 1.5em;">
+    <span style="color: red;">Blog</span><span style="color: #a2f3d2;">Vibe</span>
     </div>
-    <nav id="navMenu">
-        <a href="/">Главная</a>
-        <a href="/articles/">Статьи</a>
+    <div class="burger" id="burger" aria-label="Меню" aria-expanded="false" role="button" tabindex="0" onclick="toggleMenu()" style="width: 30px; height: 25px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer;">
+        <span style="display: block; height: 4px; background-color: white; border-radius: 2px;"></span>
+        <span style="display: block; height: 4px; background-color: white; border-radius: 2px;"></span>
+        <span style="display: block; height: 4px; background-color: white; border-radius: 2px;"></span>
+    </div>
+    <nav id="navMenu" style="display: none; position: absolute; top: 80px; right: 20px; background-color: #2d5f4c; flex-direction: column; width: 200px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 1000;">
+        <a href="/" style="color: white; padding: 10px; text-decoration: none;">Главная</a>
+        <a href="/articles/" style="color: white; padding: 10px; text-decoration: none;">Статьи</a>
     </nav>
 </header>
+
+<script>
+  function toggleMenu() {
+    const nav = document.getElementById('navMenu');
+    const isVisible = nav.style.display === 'flex';
+    nav.style.display = isVisible ? 'none' : 'flex';
+
+    const burger = document.getElementById('burger');
+    burger.setAttribute('aria-expanded', String(!isVisible));
+  }
+</script>
